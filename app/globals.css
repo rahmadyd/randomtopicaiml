@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+body {
+  color: var(--foreground);
+  background: linear-gradient(135deg, #000000 0%, #0a0a1a 50%, #000000 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Bingo animation */
+@keyframes bingo-spin {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.bingo-container {
+  overflow: hidden;
+  height: 60px;
+}
+
+.bingo-animate {
+  animation: bingo-spin 0.1s linear;
+}
+
+/* ── Print / Save as PDF styles ─────────────────────────────────────────── */
+@media print {
+  /* Hide elements that shouldn't appear in PDF */
+  .no-print,
+  header nav,
+  footer {
+    display: none !important;
+  }
+
+  /* Reset page background to white */
+  body,
+  main {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Remove dark mode colors */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  /* Ensure content fills full width */
+  .container {
+    max-width: 100% !important;
+    padding: 0 16px !important;
+  }
+
+  /* Keep cards visible with borders */
+  .rounded-2xl, .rounded-xl {
+    border: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+
+  /* Page breaks */
+  .space-y-6 > * {
+    page-break-inside: avoid;
+  }
+
+  /* Page margins */
+  @page {
+    margin: 15mm 12mm;
+    size: A4;
+  }
+}

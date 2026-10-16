@@ -1,0 +1,317 @@
+[
+  {
+    "id": "cv-health-beg-001",
+    "title": "Medical Pill Identifier App",
+    "description": "Build a computer vision app that identifies pills from photos to help patients verify their medications. Uses transfer learning with pre-trained models for quick deployment.",
+    "level": "beginner",
+    "category": "computer-vision",
+    "industry": "healthcare",
+    "estimatedTime": "2-3 weeks",
+    "techniques": ["Transfer Learning", "Image Classification", "MobileNet", "Data Augmentation"],
+    "datasets": ["NIH Pill Image Dataset", "RxImage API"],
+    "datasetLinks": [
+      {
+        "name": "NIH Pill Image Recognition Dataset",
+        "url": "https://www.kaggle.com/datasets/humansintheloop/pill-image-recognition",
+        "size": "~1.2GB",
+        "source": "kaggle"
+      },
+      {
+        "name": "Medicine Pill Detection Dataset (HuggingFace)",
+        "url": "https://huggingface.co/datasets/keremberke/pill-detection",
+        "size": "~300MB",
+        "source": "huggingface"
+      }
+    ],
+    "algorithms": [
+      {
+        "name": "MobileNetV2 (Transfer Learning)",
+        "reason": "Lightweight, runs on CPU, perfect for beginners. Pre-trained on ImageNet, fine-tune top layers only. Achieves good accuracy with minimal compute.",
+        "complexity": "simple"
+      },
+      {
+        "name": "EfficientNet-B0",
+        "reason": "Better accuracy than MobileNet with similar model size. Good alternative if MobileNet accuracy is insufficient.",
+        "complexity": "moderate"
+      }
+    ],
+    "projectSize": {
+      "datasetSize": "~1.5GB",
+      "modelSize": "~14MB (MobileNetV2)",
+      "totalStorage": "~3GB (dataset + model + dependencies)",
+      "trainingTime": "~30 min on GPU / ~3 hours on CPU"
+    },
+    "recommendedPlatform": "colab",
+    "platformReason": "Dataset ~1.5GB dan butuh GPU untuk training yang efisien. Google Colab T4 GPU gratis sudah lebih dari cukup. Download dataset langsung ke Colab tanpa perlu storage lokal.",
+    "learningOutcomes": [
+      "Transfer learning fundamentals",
+      "Mobile-friendly model optimization",
+      "Real-world medical imaging applications"
+    ],
+    "roadmap": {
+      "phases": [
+        {
+          "name": "Phase 1: Setup & Dataset",
+          "duration": "Week 1",
+          "tasks": [
+            "Download and explore NIH Pill dataset from Kaggle",
+            "Setup Python environment with TensorFlow/PyTorch",
+            "Perform data augmentation (rotation, zoom, brightness)",
+            "Split data into train/val/test sets"
+          ]
+        },
+        {
+          "name": "Phase 2: Model Training",
+          "duration": "Week 2",
+          "tasks": [
+            "Load pre-trained MobileNetV2 model",
+            "Fine-tune top layers for pill classification",
+            "Implement training loop with validation",
+            "Save best model checkpoint"
+          ]
+        },
+        {
+          "name": "Phase 3: App Development",
+          "duration": "Week 3",
+          "tasks": [
+            "Build simple web interface with Streamlit",
+            "Add image upload and prediction display",
+            "Deploy to Streamlit Cloud or Hugging Face Spaces",
+            "Test with real pill images"
+          ]
+        }
+      ],
+      "resources": [
+        "Fast.ai course - Lesson on Computer Vision",
+        "MobileNet paper and documentation",
+        "Streamlit documentation for deployment"
+      ],
+      "tips": [
+        "Start with a small subset of common pills (10-20 classes)",
+        "Use data augmentation extensively due to limited medical images",
+        "Consider adding confidence thresholds to avoid false positives"
+      ]
+    }
+  },
+  {
+    "id": "nlp-finance-int-001",
+    "title": "Stock Market Sentiment Analyzer",
+    "description": "Analyze financial news and social media to predict market sentiment. Combines NLP with time-series analysis to provide trading insights based on public opinion and news trends.",
+    "level": "intermediate",
+    "category": "nlp",
+    "industry": "finance",
+    "estimatedTime": "4-5 weeks",
+    "techniques": ["Sentiment Analysis", "BERT", "Web Scraping", "Time Series Correlation"],
+    "datasets": ["Financial PhraseBank", "Reddit WallStreetBets", "Yahoo Finance"],
+    "datasetLinks": [
+      {
+        "name": "Financial PhraseBank (HuggingFace)",
+        "url": "https://huggingface.co/datasets/financial_phrasebank",
+        "size": "~5MB",
+        "source": "huggingface"
+      },
+      {
+        "name": "Reddit WallStreetBets Sentiment Dataset (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/gpreda/reddit-wallstreetsbets-posts",
+        "size": "~150MB",
+        "source": "kaggle"
+      },
+      {
+        "name": "Stock Market Dataset (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/borismarjanovic/price-volume-data-for-all-us-stocks-etfs",
+        "size": "~900MB",
+        "source": "kaggle"
+      }
+    ],
+    "algorithms": [
+      {
+        "name": "FinBERT (BERT fine-tuned for Finance)",
+        "reason": "Pre-trained specifically on financial text. Understands finance jargon far better than general BERT. Available on HuggingFace: ProsusAI/finbert",
+        "complexity": "moderate"
+      },
+      {
+        "name": "VADER (Valence Aware Dictionary)",
+        "reason": "Rule-based, no training needed. Use as a fast baseline before FinBERT. Good for social media text.",
+        "complexity": "simple"
+      },
+      {
+        "name": "RoBERTa-base fine-tuned on SST",
+        "reason": "Alternative to FinBERT, higher accuracy on general sentiment. Use if FinBERT overfits.",
+        "complexity": "moderate"
+      }
+    ],
+    "projectSize": {
+      "datasetSize": "~1.1GB",
+      "modelSize": "~440MB (FinBERT)",
+      "totalStorage": "~2.5GB (dataset + model + dependencies)",
+      "trainingTime": "~1 hour on GPU (fine-tuning) / ~6 hours on CPU"
+    },
+    "recommendedPlatform": "colab",
+    "platformReason": "FinBERT model ~440MB dan fine-tuning butuh GPU. Colab T4 GPU gratis sangat cocok untuk project ini. Bisa run inference setelah training di local.",
+    "learningOutcomes": [
+      "Advanced NLP with transformers",
+      "Real-time data collection and processing",
+      "Correlation analysis between sentiment and stock prices"
+    ],
+    "roadmap": {
+      "phases": [
+        {
+          "name": "Phase 1: Data Collection",
+          "duration": "Week 1-2",
+          "tasks": [
+            "Download Financial PhraseBank dataset from HuggingFace",
+            "Collect Reddit WallStreetBets data from Kaggle",
+            "Pull historical stock price data via yfinance library",
+            "Create data pipeline for preprocessing"
+          ]
+        },
+        {
+          "name": "Phase 2: Sentiment Model",
+          "duration": "Week 2-3",
+          "tasks": [
+            "Fine-tune FinBERT (ProsusAI/finbert) on HuggingFace",
+            "Label sample data for validation",
+            "Batch process historical text data",
+            "Generate sentiment scores per stock ticker"
+          ]
+        },
+        {
+          "name": "Phase 3: Analysis & Dashboard",
+          "duration": "Week 4-5",
+          "tasks": [
+            "Correlate sentiment trends with price movements",
+            "Build interactive dashboard with Plotly Dash",
+            "Add real-time sentiment monitoring",
+            "Deploy backend API and frontend"
+          ]
+        }
+      ],
+      "resources": [
+        "FinBERT pre-trained model on Hugging Face: ProsusAI/finbert",
+        "Alpha Vantage API for stock data",
+        "PRAW library for Reddit scraping"
+      ],
+      "tips": [
+        "Focus on 5-10 popular stocks initially",
+        "Be aware of API rate limits",
+        "Sentiment is a signal, not a guarantee—add disclaimers"
+      ]
+    }
+  },
+  {
+    "id": "ts-ecom-adv-001",
+    "title": "Dynamic Pricing Optimization Engine",
+    "description": "Advanced time-series forecasting system that predicts optimal product prices based on demand, competition, inventory levels, and seasonal patterns. Uses ensemble methods and reinforcement learning.",
+    "level": "advanced",
+    "category": "time-series",
+    "industry": "ecommerce",
+    "estimatedTime": "6-8 weeks",
+    "techniques": ["LSTM", "Prophet", "XGBoost", "Reinforcement Learning", "Multi-variate Forecasting"],
+    "datasets": ["Retail transaction data", "Competitor price scraping", "Economic indicators"],
+    "datasetLinks": [
+      {
+        "name": "E-Commerce Sales Dataset (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/carrie1/ecommerce-data",
+        "size": "~45MB",
+        "source": "kaggle"
+      },
+      {
+        "name": "Online Retail II Dataset (UCI)",
+        "url": "https://archive.ics.uci.edu/dataset/502/online+retail+ii",
+        "size": "~45MB",
+        "source": "uci"
+      },
+      {
+        "name": "Retail Price Optimization Dataset (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/suddharshan/retail-price-optimization",
+        "size": "~15MB",
+        "source": "kaggle"
+      }
+    ],
+    "algorithms": [
+      {
+        "name": "LSTM (Long Short-Term Memory)",
+        "reason": "Best for capturing long-term temporal dependencies in pricing patterns. Handles multi-variate time series natively. Primary model for demand forecasting.",
+        "complexity": "complex"
+      },
+      {
+        "name": "XGBoost + Feature Engineering",
+        "reason": "Excellent for price elasticity modeling. Faster to train than LSTM, interpretable feature importance. Use alongside LSTM in ensemble.",
+        "complexity": "moderate"
+      },
+      {
+        "name": "PPO (Proximal Policy Optimization) - RL",
+        "reason": "For the final pricing decision agent. PPO is stable and works well with continuous action spaces like price ranges.",
+        "complexity": "complex"
+      }
+    ],
+    "projectSize": {
+      "datasetSize": "~105MB",
+      "modelSize": "~200MB (all models combined)",
+      "totalStorage": "~1.5GB (dataset + models + logs + deps)",
+      "trainingTime": "~3-5 hours on GPU / ~15+ hours on CPU"
+    },
+    "recommendedPlatform": "both",
+    "platformReason": "Dataset kecil (<200MB) jadi bisa local, tapi RL training butuh GPU. Rekomendasi: develop & EDA di local, training LSTM + RL di Colab T4 GPU gratis.",
+    "learningOutcomes": [
+      "Multi-variate time-series modeling",
+      "Ensemble forecasting techniques",
+      "RL for optimization problems",
+      "Production-grade ML pipeline design"
+    ],
+    "roadmap": {
+      "phases": [
+        {
+          "name": "Phase 1: Research & Data Engineering",
+          "duration": "Week 1-2",
+          "tasks": [
+            "Download datasets from Kaggle & UCI",
+            "Design data schema for multi-source integration",
+            "Build ETL pipeline for data ingestion",
+            "Perform extensive EDA on pricing patterns"
+          ]
+        },
+        {
+          "name": "Phase 2: Baseline Models",
+          "duration": "Week 3-4",
+          "tasks": [
+            "Implement ARIMA and Prophet baselines",
+            "Train LSTM for demand forecasting",
+            "Build XGBoost model for price elasticity",
+            "Ensemble predictions with weighted averaging"
+          ]
+        },
+        {
+          "name": "Phase 3: RL Optimization",
+          "duration": "Week 5-6",
+          "tasks": [
+            "Design RL environment (state, action, reward)",
+            "Implement PPO for pricing decisions using Stable-Baselines3",
+            "Train agent with historical simulation",
+            "A/B test framework design"
+          ]
+        },
+        {
+          "name": "Phase 4: Production & Monitoring",
+          "duration": "Week 7-8",
+          "tasks": [
+            "Containerize models with Docker",
+            "Deploy on free tier (Render/Railway)",
+            "Build monitoring dashboard for KPIs",
+            "Document API and create user guide"
+          ]
+        }
+      ],
+      "resources": [
+        "Dynamic Pricing research papers (Stanford, MIT)",
+        "Stable-Baselines3 for PPO implementation",
+        "MLflow for experiment tracking (free self-hosted)"
+      ],
+      "tips": [
+        "Start with single product category before scaling",
+        "Incorporate business constraints (min/max prices)",
+        "Validate with backtesting before live deployment"
+      ]
+    }
+  }
+]

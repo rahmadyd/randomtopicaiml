@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
     if (!apiKey) {
       console.error({ requestId, error: 'GROQ_API_KEY not configured' });
       return NextResponse.json(
-        { error: 'API configuration error' },
+        { error: 'API configuration error: GROQ_API_KEY belum diset di Environment Variables' },
         { status: 500 }
       );
     }
@@ -230,14 +230,15 @@ IMPORTANT RULES:
     return NextResponse.json(generatedIdea);
 
   } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
     console.error({
       requestId,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: errorMsg,
       stack: error instanceof Error ? error.stack : undefined,
     });
 
     return NextResponse.json(
-      { error: 'Failed to generate idea. Please try again.' },
+      { error: `Groq AI Error: ${errorMsg}` },
       { status: 500 }
     );
   }

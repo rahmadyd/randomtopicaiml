@@ -2,18 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Wand2 } from 'lucide-react';
 
 const sampleIdeas = [
   'Real-time Emotion Detection 😊',
-  'Stock Price Prediction 📈',
-  'Sentiment Analysis Tool 💬',
-  'Object Detection System 👁️',
-  'Recommendation Engine ⭐',
-  'Speech Recognition App 🎤',
-  'Image Classification 🖼️',
-  'Chatbot Development 🤖',
-  'Fraud Detection System 🔍',
-  'Time Series Forecasting ⏰',
+  'Stock Price Prediction with LSTM 📈',
+  'Medical Pill Identification with MobileNet 💊',
+  'Customer Churn Prediction with XGBoost 🔍',
+  'Automated Essay Scoring with Transformers 📚',
+  'Autonomous Driving Lane Detection 🚗',
+  'Music Recommendation with Collaborative Filtering 🎵',
+  'Defect Detection in Manufacturing Lines 🏭',
+  'Generative Art & Style Transfer 🎨',
+  'Real-time Indonesian Speech Recognition 🎙️',
 ];
 
 export default function BingoAnimation() {
@@ -22,46 +23,57 @@ export default function BingoAnimation() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIdea((prev) => (prev + 1) % sampleIdeas.length);
-    }, 100);
+    }, 120);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl shadow-2xl p-8">
-      <div className="text-center space-y-4">
-        <h3 className="text-2xl font-bold text-white">
-          🎰 Generating Your Perfect Project... 🎰
+    <div className="ios-glass rounded-[32px] p-8 text-center relative overflow-hidden shadow-2xl">
+      {/* Background shimmer */}
+      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/15 to-pink-500/10 animate-pulse pointer-events-none" />
+
+      <div className="relative z-10 max-w-lg mx-auto space-y-5">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full ios-glass-pill text-xs text-indigo-300 font-medium">
+          <Wand2 className="w-3.5 h-3.5 animate-spin" />
+          <span>Groq AI Neural Synthesis</span>
+        </div>
+
+        <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+          Merumuskan Ide Proyek Terbaik...
         </h3>
-        
-        <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 min-h-[80px] flex items-center justify-center overflow-hidden">
+
+        {/* Ticker Box */}
+        <div className="ios-glass-card rounded-2xl p-6 min-h-[90px] flex items-center justify-center overflow-hidden border border-white/15">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIdea}
-              initial={{ y: 50, opacity: 0 }}
+              initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -50, opacity: 0 }}
-              transition={{ duration: 0.1 }}
-              className="text-3xl font-bold text-white"
+              exit={{ y: -25, opacity: 0 }}
+              transition={{ duration: 0.12, ease: 'easeOut' }}
+              className="text-base sm:text-xl font-bold bg-gradient-to-r from-white via-indigo-100 to-purple-200 bg-clip-text text-transparent"
             >
               {sampleIdeas[currentIdea]}
             </motion.div>
           </AnimatePresence>
         </div>
 
-        <div className="flex justify-center gap-2">
+        {/* iOS-style loading dots */}
+        <div className="flex justify-center gap-2 pt-2">
           {[...Array(3)].map((_, i) => (
             <motion.div
               key={i}
-              className="w-3 h-3 bg-white rounded-full"
+              className="w-2.5 h-2.5 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full"
               animate={{
-                scale: [1, 1.5, 1],
-                opacity: [1, 0.5, 1],
+                scale: [1, 1.4, 1],
+                opacity: [0.4, 1, 0.4],
               }}
               transition={{
-                duration: 1,
+                duration: 1.2,
                 repeat: Infinity,
                 delay: i * 0.2,
+                ease: 'easeInOut',
               }}
             />
           ))}

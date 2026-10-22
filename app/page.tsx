@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Sparkles, RefreshCw, Printer } from 'lucide-react';
+import { RefreshCw, Printer } from 'lucide-react';
 import DropdownSelectors from '@/components/DropdownSelectors';
 import BingoAnimation from '@/components/BingoAnimation';
 import IdeaCard from '@/components/IdeaCard';
@@ -52,63 +52,86 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <main className="min-h-screen relative overflow-hidden bg-[#080914] text-white selection:bg-indigo-500/30 selection:text-white">
+      {/* ── Ambient Background Glowing Orbs (iOS Frost Glass Effect) ──────── */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden ambient-glow z-0">
+        <div className="absolute -top-32 -left-20 w-[32rem] h-[32rem] bg-indigo-600/25 rounded-full blur-[140px] animate-float-slow" />
+        <div className="absolute top-1/4 -right-28 w-[36rem] h-[36rem] bg-purple-600/25 rounded-full blur-[150px] animate-float-reverse" />
+        <div className="absolute top-2/3 left-1/4 w-[30rem] h-[30rem] bg-cyan-500/20 rounded-full blur-[140px] animate-float-slow" />
+        <div className="absolute -bottom-24 right-1/3 w-[28rem] h-[28rem] bg-pink-600/20 rounded-full blur-[130px] animate-float-reverse" />
+        {/* Subtle grid mesh overlay for depth */}
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
+      </div>
+
+      <div className="container mx-auto px-4 py-12 max-w-5xl relative z-10">
         {/* Header */}
         <header className="text-center mb-12 no-print">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Sparkles className="w-10 h-10 text-purple-600 dark:text-purple-400" />
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              AI/ML Project Idea Generator
-            </h1>
-            <Sparkles className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+          {/* iOS-Style Pill Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full ios-glass-pill text-xs font-medium text-white/90 mb-6 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>AI-Powered Idea Generator</span>
+            <span className="text-white/30">•</span>
+            <span className="text-indigo-300">iOS Glass Edition</span>
           </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg">
-            Temukan ide project AI/ML yang unik dan mendalam sesuai level kamu
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
+            <span className="bg-gradient-to-b from-white via-white/95 to-white/70 bg-clip-text text-transparent drop-shadow-sm">
+              AI/ML Project Idea
+            </span>{' '}
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+              Generator
+            </span>
+          </h1>
+
+          <p className="text-white/65 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Dapatkan ide proyek AI & Machine Learning yang komprehensif, roadmap bertahap, dataset siap pakai, dan estimasi resource sesuai level Anda.
           </p>
         </header>
 
-        {/* Selection Area */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 mb-8 no-print">
+        {/* Selection Area - iOS Glass Container */}
+        <div className="ios-glass rounded-[32px] p-6 sm:p-10 mb-10 no-print transition-all duration-300">
           <DropdownSelectors onGenerate={handleGenerate} isGenerating={isGenerating} />
         </div>
 
         {/* Bingo Animation */}
         {isGenerating && (
-          <div className="mb-8 no-print">
+          <div className="mb-10 no-print">
             <BingoAnimation />
           </div>
         )}
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 mb-8 no-print">
-            <p className="text-red-600 dark:text-red-400 text-center">{error}</p>
+          <div className="ios-glass rounded-2xl p-5 mb-10 no-print border-red-500/30 bg-red-950/20">
+            <div className="flex items-center gap-3">
+              <span className="text-red-400 text-xl">⚠️</span>
+              <p className="text-red-200 text-sm font-medium">{error}</p>
+            </div>
           </div>
         )}
 
         {/* Generated Idea */}
         {generatedIdea && !isGenerating && (
-          <div className="space-y-6">
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-500">
             <IdeaCard idea={generatedIdea} />
             
             {/* Action Buttons */}
-            <div className="flex gap-4 justify-center flex-wrap no-print">
+            <div className="flex gap-4 justify-center flex-wrap no-print pt-2">
               <button
                 onClick={handlePrint}
-                className="flex items-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-indigo-500/40"
-                title="Buka dialog print browser untuk cetak atau pilih Simpan sebagai PDF"
+                className="flex items-center gap-2.5 px-7 py-3.5 rounded-2xl ios-glass-pill hover:bg-white/15 active:scale-95 text-white font-medium text-sm sm:text-base transition-all duration-200 shadow-lg hover:shadow-indigo-500/20"
+                title="Buka dialog print browser untuk cetak atau simpan sebagai PDF"
               >
-                <Printer className="w-5 h-5" />
+                <Printer className="w-4 h-4 text-indigo-300" />
                 Print / Save as PDF
               </button>
 
               <button
                 onClick={() => setGeneratedIdea(null)}
-                className="flex items-center gap-2 px-6 py-3.5 bg-purple-600 hover:bg-purple-700 active:scale-95 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-purple-500/40"
+                className="flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:brightness-110 active:scale-95 text-white font-medium text-sm sm:text-base transition-all duration-200 shadow-lg shadow-indigo-500/25"
               >
-                <RefreshCw className="w-5 h-5" />
-                Generate New
+                <RefreshCw className="w-4 h-4 text-white" />
+                Generate New Idea
               </button>
             </div>
 
@@ -118,9 +141,13 @@ export default function Home() {
         )}
 
         {/* Footer */}
-        <footer className="text-center mt-16 text-gray-500 dark:text-gray-400 no-print">
-          <p>Built with ❤️ using Next.js & Groq AI</p>
-          <p className="text-sm mt-2">Secure • Fast • Free</p>
+        <footer className="text-center mt-20 text-white/40 text-xs sm:text-sm no-print">
+          <p className="flex items-center justify-center gap-2">
+            <span>Designed with iOS Glassmorphism</span>
+            <span>•</span>
+            <span>Powered by Groq AI</span>
+          </p>
+          <p className="mt-1.5 text-white/30 text-xs">Fast • Structured • Free</p>
         </footer>
       </div>
     </main>

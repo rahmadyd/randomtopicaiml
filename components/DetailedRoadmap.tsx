@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MapPin, BookOpen, Lightbulb, CheckCircle } from 'lucide-react';
+import { BookOpen, Lightbulb, CheckCircle2, Milestone } from 'lucide-react';
 import type { Roadmap } from '@/types';
 
 interface DetailedRoadmapProps {
@@ -11,47 +11,56 @@ interface DetailedRoadmapProps {
 export default function DetailedRoadmap({ roadmap }: DetailedRoadmapProps) {
   return (
     <motion.div
-      initial={{ y: 50, opacity: 0 }}
+      initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.3 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8"
+      transition={{ delay: 0.2 }}
+      className="ios-glass rounded-[32px] p-6 sm:p-10 shadow-2xl relative overflow-hidden"
     >
-      <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-3">
-        <MapPin className="w-8 h-8 text-purple-600" />
-        Detailed Roadmap
-      </h2>
+      <div className="flex items-center gap-3 mb-8 pb-5 border-b border-white/10">
+        <div className="p-2.5 rounded-2xl ios-glass-pill text-indigo-400">
+          <Milestone className="w-6 h-6" />
+        </div>
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold text-white">
+            Roadmap Eksekusi Langkah-demi-Langkah
+          </h2>
+          <p className="text-xs sm:text-sm text-white/50">
+            Panduan fase pengerjaan proyek dari tahap setup hingga deployment
+          </p>
+        </div>
+      </div>
 
-      {/* Phases */}
-      <div className="space-y-6 mb-8">
+      {/* Timeline Phases */}
+      <div className="space-y-6 mb-10">
         {roadmap.phases.map((phase, idx) => (
           <motion.div
             key={idx}
-            initial={{ x: -50, opacity: 0 }}
+            initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.1 * idx }}
-            className="border-l-4 border-purple-500 pl-6 py-2"
+            className="ios-glass-card rounded-2xl p-5 sm:p-6 transition-colors"
           >
-            <div className="flex items-center gap-3 mb-3">
-              <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">
+            <div className="flex items-center gap-3.5 mb-4">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center font-bold text-sm shadow-md">
                 {idx + 1}
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                <h3 className="text-base sm:text-lg font-bold text-white">
                   {phase.name}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {phase.duration}
-                </p>
+                <span className="text-xs text-indigo-300 font-medium">
+                  ⏳ {phase.duration}
+                </span>
               </div>
             </div>
 
-            <ul className="space-y-2 ml-11">
+            <ul className="space-y-2.5 pl-2 sm:pl-11">
               {phase.tasks.map((task, taskIdx) => (
                 <li
                   key={taskIdx}
-                  className="flex items-start gap-2 text-gray-700 dark:text-gray-300"
+                  className="flex items-start gap-2.5 text-xs sm:text-sm text-white/80"
                 >
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
                   <span>{task}</span>
                 </li>
               ))}
@@ -60,42 +69,45 @@ export default function DetailedRoadmap({ roadmap }: DetailedRoadmapProps) {
         ))}
       </div>
 
-      {/* Resources */}
-      <div className="mb-6">
-        <h3 className="font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600" />
-          Recommended Resources:
-        </h3>
-        <ul className="space-y-2">
-          {roadmap.resources.map((resource, idx) => (
-            <li
-              key={idx}
-              className="flex items-start gap-2 text-gray-700 dark:text-gray-300 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3"
-            >
-              <span className="text-blue-500">📚</span>
-              <span>{resource}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Resources & Tips Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Resources */}
+        <div className="ios-glass-card rounded-2xl p-5 sm:p-6">
+          <h3 className="font-semibold text-white mb-4 flex items-center gap-2 text-sm sm:text-base">
+            <BookOpen className="w-4 h-4 text-sky-400" />
+            Rujukan & Sumber Belajar:
+          </h3>
+          <ul className="space-y-2.5">
+            {roadmap.resources.map((resource, idx) => (
+              <li
+                key={idx}
+                className="flex items-start gap-2.5 text-xs sm:text-sm text-white/80 ios-glass-subtle rounded-xl p-3"
+              >
+                <span className="text-sky-400">📖</span>
+                <span>{resource}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      {/* Tips */}
-      <div>
-        <h3 className="font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
-          <Lightbulb className="w-5 h-5 text-yellow-600" />
-          Pro Tips:
-        </h3>
-        <ul className="space-y-2">
-          {roadmap.tips.map((tip, idx) => (
-            <li
-              key={idx}
-              className="flex items-start gap-2 text-gray-700 dark:text-gray-300 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3"
-            >
-              <span className="text-yellow-500">💡</span>
-              <span>{tip}</span>
-            </li>
-          ))}
-        </ul>
+        {/* Tips */}
+        <div className="ios-glass-card rounded-2xl p-5 sm:p-6">
+          <h3 className="font-semibold text-white mb-4 flex items-center gap-2 text-sm sm:text-base">
+            <Lightbulb className="w-4 h-4 text-amber-400" />
+            Tips Sukses Pengembangan:
+          </h3>
+          <ul className="space-y-2.5">
+            {roadmap.tips.map((tip, idx) => (
+              <li
+                key={idx}
+                className="flex items-start gap-2.5 text-xs sm:text-sm text-white/80 ios-glass-subtle rounded-xl p-3"
+              >
+                <span className="text-amber-400">💡</span>
+                <span>{tip}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </motion.div>
   );

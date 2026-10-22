@@ -3,15 +3,104 @@
 @tailwind utilities;
 
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
+  --background: #090a16;
+  --foreground: #f4f4f7;
 }
 
 body {
   color: var(--foreground);
-  background: linear-gradient(135deg, #000000 0%, #0a0a1a 50%, #000000 100%);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #080914;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', sans-serif;
   min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── iOS Frosted Glass Classes ─────────────────────────────────────────── */
+.ios-glass {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 
+    0 20px 50px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.ios-glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 10px 30px -8px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.ios-glass-subtle {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ios-glass-pill {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+}
+
+.ios-glass-input {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-glass-input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 
+    0 0 0 3px rgba(99, 102, 241, 0.25),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Floating ambient orbs animation */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -40px) scale(1.08);
+  }
+  66% {
+    transform: translate(-25px, 20px) scale(0.95);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-35px, 35px) scale(1.1);
+  }
+  66% {
+    transform: translate(30px, -30px) scale(0.92);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 18s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 22s ease-in-out infinite;
 }
 
 @layer utilities {
@@ -22,20 +111,22 @@ body {
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: rgba(255, 255, 255, 0.32);
 }
 
 /* Bingo animation */
@@ -62,7 +153,8 @@ body {
   /* Hide elements that shouldn't appear in PDF */
   .no-print,
   header nav,
-  footer {
+  footer,
+  .ambient-glow {
     display: none !important;
   }
 
@@ -87,9 +179,10 @@ body {
   }
 
   /* Keep cards visible with borders */
-  .rounded-2xl, .rounded-xl {
+  .rounded-2xl, .rounded-xl, .ios-glass, .ios-glass-card {
     border: 1px solid #e5e7eb !important;
     box-shadow: none !important;
+    background: white !important;
     page-break-inside: avoid;
   }
 

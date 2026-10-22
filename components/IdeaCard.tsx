@@ -1,7 +1,20 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Trophy, Clock, Brain, Database, HardDrive, Cpu, Link2, MonitorSmartphone, Laptop, Cloud } from 'lucide-react';
+import { 
+  Trophy, 
+  Clock, 
+  Brain, 
+  Database, 
+  HardDrive, 
+  Cpu, 
+  MonitorSmartphone, 
+  Laptop, 
+  Cloud,
+  CheckCircle2,
+  Sparkles,
+  ExternalLink
+} from 'lucide-react';
 import type { ProjectIdea } from '@/types';
 
 interface IdeaCardProps {
@@ -9,12 +22,12 @@ interface IdeaCardProps {
 }
 
 const sourceColors: Record<string, string> = {
-  kaggle:      'bg-blue-500',
-  huggingface: 'bg-yellow-500',
-  uci:         'bg-green-500',
-  github:      'bg-gray-700',
-  official:    'bg-purple-500',
-  other:       'bg-gray-500',
+  kaggle:      'bg-sky-500/20 text-sky-300 border-sky-400/30',
+  huggingface: 'bg-amber-500/20 text-amber-300 border-amber-400/30',
+  uci:         'bg-emerald-500/20 text-emerald-300 border-emerald-400/30',
+  github:      'bg-slate-500/20 text-slate-300 border-slate-400/30',
+  official:    'bg-purple-500/20 text-purple-300 border-purple-400/30',
+  other:       'bg-gray-500/20 text-gray-300 border-gray-400/30',
 };
 
 const sourceLabels: Record<string, string> = {
@@ -23,226 +36,211 @@ const sourceLabels: Record<string, string> = {
   uci:         'UCI ML',
   github:      'GitHub',
   official:    'Official',
-  other:       'Other',
+  other:       'Source',
 };
 
 const complexityBadge: Record<string, string> = {
-  simple:   'bg-green-100 text-green-800 dark:bg-green-900/60 dark:text-green-300',
-  moderate: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/60 dark:text-yellow-300',
-  complex:  'bg-red-100 text-red-800 dark:bg-red-900/60 dark:text-red-300',
+  simple:   'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  moderate: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+  complex:  'bg-rose-500/15 text-rose-300 border-rose-500/30',
 };
 
 export default function IdeaCard({ idea }: IdeaCardProps) {
   const levelColors = {
-    beginner:     'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-    intermediate: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-    advanced:     'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+    beginner:     'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+    intermediate: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+    advanced:     'bg-rose-500/15 text-rose-300 border-rose-500/30',
   };
 
   const platformIcon = idea.recommendedPlatform === 'local'
-    ? <Laptop className="w-5 h-5 text-green-500" />
+    ? <Laptop className="w-5 h-5 text-emerald-400" />
     : idea.recommendedPlatform === 'colab'
-    ? <Cloud className="w-5 h-5 text-blue-500" />
-    : <MonitorSmartphone className="w-5 h-5 text-purple-500" />;
+    ? <Cloud className="w-5 h-5 text-sky-400" />
+    : <MonitorSmartphone className="w-5 h-5 text-purple-400" />;
 
   const platformLabel = {
-    local: '💻 Jalankan Lokal',
-    colab: '☁️ Google Colab (Gratis)',
-    both:  '🔀 Local + Colab',
+    local: '💻 Komputer Lokal',
+    colab: '☁️ Google Colab (Gratis GPU T4)',
+    both:  '🔀 Hybrid (Lokal / Colab)',
   };
 
   return (
     <motion.div
-      initial={{ scale: 0.8, opacity: 0 }}
+      initial={{ scale: 0.95, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.5, type: 'spring' }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 border-4 border-purple-200 dark:border-purple-700"
+      transition={{ duration: 0.4, type: 'spring', damping: 20 }}
+      className="ios-glass rounded-[32px] p-6 sm:p-10 shadow-2xl relative overflow-hidden"
     >
+      {/* Decorative top accent glow */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-400/60 to-transparent" />
+
       {/* Header */}
-      <div className="text-center mb-6">
+      <div className="text-center mb-8">
         <motion.div
-          initial={{ y: -20 }}
-          animate={{ y: 0 }}
-          className="inline-block"
+          initial={{ y: -15, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="inline-flex p-3 rounded-2xl ios-glass-pill mb-4 shadow-inner"
         >
-          <Trophy className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+          <Sparkles className="w-8 h-8 text-amber-300" />
         </motion.div>
-        <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">
+
+        <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-4 leading-tight">
           {idea.title}
         </h2>
+
+        {/* Tags */}
         <div className="flex items-center justify-center gap-2 flex-wrap">
-          <span className={`px-3 py-1 rounded-full text-sm font-semibold ${levelColors[idea.level]}`}>
+          <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${levelColors[idea.level]}`}>
             📊 {idea.level.toUpperCase()}
           </span>
-          <span className="px-3 py-1 rounded-full text-sm font-semibold bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+          <span className="px-3 py-1 rounded-full text-xs font-semibold border border-purple-500/30 bg-purple-500/15 text-purple-200">
             🤖 {idea.category.replace('-', ' ').toUpperCase()}
           </span>
-          <span className="px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+          <span className="px-3 py-1 rounded-full text-xs font-semibold border border-sky-500/30 bg-sky-500/15 text-sky-200">
             🏢 {idea.industry.toUpperCase()}
           </span>
         </div>
       </div>
 
       {/* Description */}
-      <p className="text-gray-700 dark:text-gray-300 text-lg text-center mb-6 leading-relaxed">
+      <div className="ios-glass-card rounded-2xl p-5 sm:p-6 mb-8 text-white/80 text-base sm:text-lg leading-relaxed text-center">
         {idea.description}
-      </p>
+      </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4 text-center">
-          <Clock className="w-6 h-6 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
-          <p className="text-sm text-gray-600 dark:text-gray-400">Duration</p>
-          <p className="font-bold text-gray-800 dark:text-white">{idea.estimatedTime}</p>
+      {/* Stats Summary Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 mb-8">
+        <div className="ios-glass-card rounded-2xl p-4 text-center">
+          <Clock className="w-5 h-5 text-indigo-400 mx-auto mb-1.5" />
+          <p className="text-xs text-white/50 mb-0.5">Estimasi Waktu</p>
+          <p className="font-bold text-sm sm:text-base text-white">{idea.estimatedTime}</p>
         </div>
         
-        <div className="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 text-center">
-          <Brain className="w-6 h-6 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
-          <p className="text-sm text-gray-600 dark:text-gray-400">Techniques</p>
-          <p className="font-bold text-gray-800 dark:text-white">{idea.techniques.length} skills</p>
+        <div className="ios-glass-card rounded-2xl p-4 text-center">
+          <Brain className="w-5 h-5 text-purple-400 mx-auto mb-1.5" />
+          <p className="text-xs text-white/50 mb-0.5">Teknik & Skill</p>
+          <p className="font-bold text-sm sm:text-base text-white">{idea.techniques.length} materi</p>
         </div>
         
-        <div className="bg-green-50 dark:bg-green-900/30 rounded-xl p-4 text-center">
-          <Database className="w-6 h-6 text-green-600 dark:text-green-400 mx-auto mb-2" />
-          <p className="text-sm text-gray-600 dark:text-gray-400">Datasets</p>
-          <p className="font-bold text-gray-800 dark:text-white">{idea.datasetLinks?.length ?? idea.datasets.length} sources</p>
+        <div className="ios-glass-card rounded-2xl p-4 text-center">
+          <Database className="w-5 h-5 text-emerald-400 mx-auto mb-1.5" />
+          <p className="text-xs text-white/50 mb-0.5">Kebutuhan Dataset</p>
+          <p className="font-bold text-sm sm:text-base text-white">{idea.datasetLinks?.length ?? idea.datasets.length} sumber</p>
         </div>
         
-        <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-xl p-4 text-center">
-          <Trophy className="w-6 h-6 text-yellow-600 dark:text-yellow-400 mx-auto mb-2" />
-          <p className="text-sm text-gray-600 dark:text-gray-400">Outcomes</p>
-          <p className="font-bold text-gray-800 dark:text-white">{idea.learningOutcomes.length} skills</p>
+        <div className="ios-glass-card rounded-2xl p-4 text-center">
+          <Trophy className="w-5 h-5 text-amber-400 mx-auto mb-1.5" />
+          <p className="text-xs text-white/50 mb-0.5">Target Capaian</p>
+          <p className="font-bold text-sm sm:text-base text-white">{idea.learningOutcomes.length} kompetensi</p>
         </div>
       </div>
 
-      {/* ── NEW: Project Size Estimate ── */}
+      {/* ── Estimasi Ukuran Project ── */}
       {idea.projectSize && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="mb-6 bg-gradient-to-r from-slate-50 to-gray-100 dark:from-gray-700 dark:to-gray-700/60 rounded-xl p-5 border border-gray-200 dark:border-gray-600"
-        >
-          <h3 className="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
-            <HardDrive className="w-5 h-5 text-slate-600 dark:text-slate-300" />
-            Estimasi Ukuran Project
+        <div className="mb-8 ios-glass-card rounded-2xl p-5 sm:p-6 border border-white/10">
+          <h3 className="font-semibold text-white mb-4 flex items-center gap-2 text-sm sm:text-base">
+            <HardDrive className="w-4 h-4 text-indigo-400" />
+            Estimasi Kebutuhan Hardware & Storage
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="text-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">📦 Dataset</p>
-              <p className="font-bold text-sm text-blue-600 dark:text-blue-400">{idea.projectSize.datasetSize}</p>
+            <div className="ios-glass-subtle rounded-xl p-3 text-center">
+              <p className="text-xs text-white/50 mb-1">📦 Ukuran Dataset</p>
+              <p className="font-bold text-sm text-sky-300">{idea.projectSize.datasetSize}</p>
             </div>
-            <div className="text-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">🧠 Model</p>
-              <p className="font-bold text-sm text-purple-600 dark:text-purple-400">{idea.projectSize.modelSize}</p>
+            <div className="ios-glass-subtle rounded-xl p-3 text-center">
+              <p className="text-xs text-white/50 mb-1">🧠 Model Weight</p>
+              <p className="font-bold text-sm text-purple-300">{idea.projectSize.modelSize}</p>
             </div>
-            <div className="text-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">💾 Total Storage</p>
-              <p className="font-bold text-sm text-green-600 dark:text-green-400">{idea.projectSize.totalStorage}</p>
+            <div className="ios-glass-subtle rounded-xl p-3 text-center">
+              <p className="text-xs text-white/50 mb-1">💾 Total Storage</p>
+              <p className="font-bold text-sm text-emerald-300">{idea.projectSize.totalStorage}</p>
             </div>
-            <div className="text-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">⏱️ Training</p>
-              <p className="font-bold text-sm text-orange-600 dark:text-orange-400">{idea.projectSize.trainingTime}</p>
+            <div className="ios-glass-subtle rounded-xl p-3 text-center">
+              <p className="text-xs text-white/50 mb-1">⏱️ Durasi Training</p>
+              <p className="font-bold text-sm text-amber-300">{idea.projectSize.trainingTime}</p>
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
 
-      {/* ── NEW: Platform Recommendation ── */}
+      {/* ── Platform Rekomendasi ── */}
       {idea.recommendedPlatform && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className={`mb-6 rounded-xl p-5 border-2 ${
-            idea.recommendedPlatform === 'colab'
-              ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700'
-              : idea.recommendedPlatform === 'local'
-              ? 'bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700'
-              : 'bg-purple-50 dark:bg-purple-900/20 border-purple-300 dark:border-purple-700'
-          }`}
-        >
+        <div className="mb-8 ios-glass-card rounded-2xl p-5 sm:p-6 border border-white/10">
           <div className="flex items-center gap-3 mb-2">
-            {platformIcon}
-            <h3 className="font-semibold text-gray-800 dark:text-white">
-              Platform Rekomendasi:{' '}
-              <span className={`font-bold ${
-                idea.recommendedPlatform === 'colab' ? 'text-blue-600 dark:text-blue-400'
-                : idea.recommendedPlatform === 'local' ? 'text-green-600 dark:text-green-400'
-                : 'text-purple-600 dark:text-purple-400'
-              }`}>
-                {platformLabel[idea.recommendedPlatform]}
-              </span>
-            </h3>
+            <div className="p-2 rounded-xl ios-glass-pill">
+              {platformIcon}
+            </div>
+            <div>
+              <h3 className="font-semibold text-white text-sm sm:text-base">
+                Rekomendasi Lingkungan Kerja:{' '}
+                <span className="font-bold text-indigo-300">
+                  {platformLabel[idea.recommendedPlatform]}
+                </span>
+              </h3>
+            </div>
           </div>
           {idea.platformReason && (
-            <p className="text-sm text-gray-600 dark:text-gray-300 ml-8">{idea.platformReason}</p>
+            <p className="text-xs sm:text-sm text-white/70 mt-2 pl-1 leading-relaxed">
+              {idea.platformReason}
+            </p>
           )}
           {idea.recommendedPlatform !== 'local' && (
-            <a
-              href="https://colab.research.google.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 mt-3 ml-8 text-xs text-blue-600 dark:text-blue-400 hover:underline"
-            >
-              <Link2 className="w-3 h-3" />
-              Buka Google Colab →
-            </a>
+            <div className="mt-3">
+              <a
+                href="https://colab.research.google.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl ios-glass-pill text-xs text-sky-300 hover:text-white transition-colors"
+              >
+                <span>Buka Google Colab</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
           )}
-        </motion.div>
+        </div>
       )}
 
-      {/* ── NEW: Algorithm Recommendations ── */}
+      {/* ── Rekomendasi Algoritma ── */}
       {idea.algorithms && idea.algorithms.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="mb-6"
-        >
-          <h3 className="font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
-            <Cpu className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-            Algoritma yang Direkomendasikan
+        <div className="mb-8">
+          <h3 className="font-semibold text-white mb-3.5 flex items-center gap-2 text-sm sm:text-base">
+            <Cpu className="w-4 h-4 text-indigo-400" />
+            Arsitektur Algoritma yang Direkomendasikan
           </h3>
           <div className="space-y-3">
             {idea.algorithms.map((algo, idx) => (
               <div
                 key={idx}
-                className={`rounded-xl p-4 border ${
-                  idx === 0
-                    ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-700'
-                    : 'bg-gray-50 dark:bg-gray-700/40 border-gray-200 dark:border-gray-600'
-                }`}
+                className="ios-glass-card rounded-2xl p-4 transition-colors"
               >
-                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                <div className="flex items-center gap-2.5 mb-1.5 flex-wrap">
                   {idx === 0 && (
-                    <span className="text-xs font-bold bg-indigo-600 text-white px-2 py-0.5 rounded-full">
-                      ⭐ PRIMARY
+                    <span className="text-[10px] font-bold tracking-wider bg-indigo-500/30 border border-indigo-400/40 text-indigo-200 px-2 py-0.5 rounded-full">
+                      ⭐ PRIMARY ALGORITHM
                     </span>
                   )}
-                  <span className="font-bold text-gray-800 dark:text-white text-sm">{algo.name}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${complexityBadge[algo.complexity]}`}>
-                    {algo.complexity}
+                  <span className="font-bold text-white text-sm sm:text-base">{algo.name}</span>
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${complexityBadge[algo.complexity]}`}>
+                    {algo.complexity.toUpperCase()}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{algo.reason}</p>
+                <p className="text-xs sm:text-sm text-white/70 leading-relaxed">{algo.reason}</p>
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       )}
 
-      {/* Techniques */}
-      <div className="mb-6">
-        <h3 className="font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
-          <Brain className="w-5 h-5" />
-          Key Techniques:
+      {/* ── Key Techniques ── */}
+      <div className="mb-8">
+        <h3 className="font-semibold text-white mb-3.5 flex items-center gap-2 text-sm sm:text-base">
+          <Brain className="w-4 h-4 text-purple-400" />
+          Teknik & Library Kunci:
         </h3>
         <div className="flex flex-wrap gap-2">
           {idea.techniques.map((tech, idx) => (
             <span
               key={idx}
-              className="px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200 rounded-lg text-sm"
+              className="px-3 py-1.5 ios-glass-pill rounded-xl text-xs sm:text-sm text-white/90 font-medium"
             >
               {tech}
             </span>
@@ -250,50 +248,49 @@ export default function IdeaCard({ idea }: IdeaCardProps) {
         </div>
       </div>
 
-      {/* ── NEW: Dataset Links (clickable) ── */}
+      {/* ── Datasets (Clickable Links) ── */}
       {idea.datasetLinks && idea.datasetLinks.length > 0 ? (
-        <div className="mb-6">
-          <h3 className="font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
-            <Database className="w-5 h-5 text-green-600" />
-            Dataset (Link Langsung):
+        <div className="mb-8">
+          <h3 className="font-semibold text-white mb-3.5 flex items-center gap-2 text-sm sm:text-base">
+            <Database className="w-4 h-4 text-emerald-400" />
+            Dataset Siap Pakai (Tautan Langsung):
           </h3>
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {idea.datasetLinks.map((ds, idx) => (
               <a
                 key={idx}
                 href={ds.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between gap-3 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/40 border border-green-200 dark:border-green-700 rounded-xl p-3 transition-colors group"
+                className="flex items-center justify-between gap-3 ios-glass-card hover:bg-white/[0.09] rounded-2xl p-3.5 transition-all group"
               >
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className={`text-white text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${sourceColors[ds.source] ?? 'bg-gray-500'}`}>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${sourceColors[ds.source] ?? 'bg-white/10 text-white border-white/20'}`}>
                     {sourceLabels[ds.source] ?? ds.source}
                   </span>
-                  <span className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate group-hover:text-green-700 dark:group-hover:text-green-300">
+                  <span className="text-xs sm:text-sm font-medium text-white truncate group-hover:text-indigo-300 transition-colors">
                     {ds.name}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">{ds.size}</span>
-                  <Link2 className="w-4 h-4 text-green-500 flex-shrink-0" />
+                  <span className="text-xs text-white/50 font-mono">{ds.size}</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-white/40 group-hover:text-white transition-colors" />
                 </div>
               </a>
             ))}
           </div>
         </div>
       ) : (
-        /* Fallback: show plain dataset names if no links */
-        <div className="mb-6">
-          <h3 className="font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
-            <Database className="w-5 h-5" />
-            Datasets:
+        <div className="mb-8">
+          <h3 className="font-semibold text-white mb-3.5 flex items-center gap-2 text-sm sm:text-base">
+            <Database className="w-4 h-4 text-emerald-400" />
+            Dataset:
           </h3>
           <div className="flex flex-wrap gap-2">
             {idea.datasets.map((ds, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 rounded-lg text-sm"
+                className="px-3 py-1.5 ios-glass-pill rounded-xl text-xs sm:text-sm text-white/90"
               >
                 {ds}
               </span>
@@ -302,20 +299,20 @@ export default function IdeaCard({ idea }: IdeaCardProps) {
         </div>
       )}
 
-      {/* Learning Outcomes */}
+      {/* ── Learning Outcomes ── */}
       <div>
-        <h3 className="font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
-          <Trophy className="w-5 h-5" />
-          What You&apos;ll Learn:
+        <h3 className="font-semibold text-white mb-3.5 flex items-center gap-2 text-sm sm:text-base">
+          <Trophy className="w-4 h-4 text-amber-400" />
+          Kompetensi yang Akan Anda Kuasai:
         </h3>
-        <ul className="space-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           {idea.learningOutcomes.map((outcome, idx) => (
-            <li key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
-              <span className="text-green-500 mt-1">✓</span>
-              <span>{outcome}</span>
-            </li>
+            <div key={idx} className="flex items-start gap-2.5 ios-glass-subtle rounded-xl p-3">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+              <span className="text-xs sm:text-sm text-white/80">{outcome}</span>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </motion.div>
   );

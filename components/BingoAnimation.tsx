@@ -23,7 +23,7 @@ export default function BingoAnimation() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIdea((prev) => (prev + 1) % sampleIdeas.length);
-    }, 120);
+    }, 350);
 
     return () => clearInterval(interval);
   }, []);

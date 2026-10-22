@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { BookOpen, Lightbulb, CheckCircle2, Milestone } from 'lucide-react';
 import type { Roadmap } from '@/types';
 
@@ -10,12 +9,7 @@ interface DetailedRoadmapProps {
 
 export default function DetailedRoadmap({ roadmap }: DetailedRoadmapProps) {
   return (
-    <motion.div
-      initial={{ y: 30, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.2 }}
-      className="ios-glass rounded-[32px] p-6 sm:p-10 shadow-2xl relative overflow-hidden"
-    >
+    <div className="ios-glass rounded-[32px] p-6 sm:p-10 shadow-2xl relative overflow-hidden anim-fade-up">
       <div className="flex items-center gap-3 mb-8 pb-5 border-b border-white/10">
         <div className="p-2.5 rounded-2xl ios-glass-pill text-indigo-400">
           <Milestone className="w-6 h-6" />
@@ -33,15 +27,12 @@ export default function DetailedRoadmap({ roadmap }: DetailedRoadmapProps) {
       {/* Timeline Phases */}
       <div className="space-y-6 mb-10">
         {roadmap.phases.map((phase, idx) => (
-          <motion.div
+          <div
             key={idx}
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.1 * idx }}
             className="ios-glass-card rounded-2xl p-5 sm:p-6 transition-colors"
           >
             <div className="flex items-center gap-3.5 mb-4">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center font-bold text-sm shadow-md">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center font-bold text-sm shadow-md flex-shrink-0">
                 {idx + 1}
               </div>
               <div>
@@ -65,7 +56,7 @@ export default function DetailedRoadmap({ roadmap }: DetailedRoadmapProps) {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
         ))}
       </div>
 
@@ -75,7 +66,7 @@ export default function DetailedRoadmap({ roadmap }: DetailedRoadmapProps) {
         <div className="ios-glass-card rounded-2xl p-5 sm:p-6">
           <h3 className="font-semibold text-white mb-4 flex items-center gap-2 text-sm sm:text-base">
             <BookOpen className="w-4 h-4 text-sky-400" />
-            Rujukan & Sumber Belajar:
+            Rujukan &amp; Sumber Belajar:
           </h3>
           <ul className="space-y-2.5">
             {roadmap.resources.map((resource, idx) => (
@@ -109,6 +100,6 @@ export default function DetailedRoadmap({ roadmap }: DetailedRoadmapProps) {
           </ul>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

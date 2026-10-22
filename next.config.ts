@@ -24,11 +24,26 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Enable gzip/brotli compression
+  compress: true,
+
+  // Optimize bundle — tree-shake icon imports
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
+
   async headers() {
     return [
       {
         source: '/:path*',
         headers: securityHeaders,
+      },
+      // Cache static assets aggressively
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
       },
     ];
   },

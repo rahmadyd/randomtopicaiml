@@ -16,39 +16,60 @@ body {
   position: relative;
 }
 
+/* ── CSS Animations (replaces framer-motion for simple cases) ────────────── */
+@keyframes fade-scale {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-fade-scale {
+  animation: fade-scale 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.anim-fade-up {
+  animation: fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
 /* ── High-Performance iOS Frosted Glass ──────────────────────────────────── */
-/* Using optimized blur (12px) & GPU compositing for silky 60/120fps */
+/* Only the outermost containers use backdrop-filter; inner cards use solid bg. */
 .ios-glass {
   background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 
     0 16px 36px -8px rgba(0, 0, 0, 0.45),
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+  /* promote to its own compositing layer — avoids repaints from backdrop-filter */
+  will-change: transform;
   transform: translateZ(0);
+  contain: layout style;
 }
 
+/* Inner cards: NO backdrop-filter — solid bg is far cheaper when nested */
 .ios-glass-card {
-  background: rgba(255, 255, 255, 0.045);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.055);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
-    0 8px 20px -4px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+    0 4px 12px -2px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
   transform: translateZ(0);
 }
 
 .ios-glass-subtle {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .ios-glass-pill {
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
 }
@@ -57,7 +78,7 @@ body {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
-  transition: all 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .ios-glass-input:focus {
@@ -68,15 +89,15 @@ body {
     inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Hardware-accelerated background mesh without CPU/GPU rasterization lag */
+/* Static aurora background — no animation, pure CSS, zero CPU cost */
 .ios-aurora-bg {
   background-color: #080914;
   background-image: 
-    radial-gradient(circle at 18% 18%, rgba(99, 102, 241, 0.18) 0%, transparent 48%),
-    radial-gradient(circle at 82% 22%, rgba(168, 85, 247, 0.16) 0%, transparent 46%),
-    radial-gradient(circle at 45% 78%, rgba(6, 182, 212, 0.13) 0%, transparent 46%),
-    radial-gradient(circle at 85% 82%, rgba(236, 72, 153, 0.12) 0%, transparent 42%);
-  background-attachment: fixed;
+    radial-gradient(ellipse 60% 50% at 18% 18%, rgba(99, 102, 241, 0.18) 0%, transparent 100%),
+    radial-gradient(ellipse 55% 45% at 82% 22%, rgba(168, 85, 247, 0.16) 0%, transparent 100%),
+    radial-gradient(ellipse 50% 50% at 45% 78%, rgba(6, 182, 212, 0.12) 0%, transparent 100%),
+    radial-gradient(ellipse 45% 40% at 85% 82%, rgba(236, 72, 153, 0.11) 0%, transparent 100%);
+  /* Fixed attachment removed — causes compositing issues on mobile */
 }
 
 @layer utilities {
@@ -87,32 +108,26 @@ body {
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.28);
 }
 
-/* Bingo animation */
+/* Bingo animation (unused but kept for reference) */
 @keyframes bingo-spin {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
 }
 
 .bingo-container {
@@ -126,7 +141,6 @@ body {
 
 /* ── Print / Save as PDF styles ─────────────────────────────────────────── */
 @media print {
-  /* Hide elements that shouldn't appear in PDF */
   .no-print,
   header nav,
   footer,
@@ -135,27 +149,23 @@ body {
     display: none !important;
   }
 
-  /* Reset page background to white */
   body,
   main {
     background: white !important;
     color: black !important;
   }
 
-  /* Remove dark mode colors */
   * {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
   }
 
-  /* Ensure content fills full width */
   .container {
     max-width: 100% !important;
     padding: 0 16px !important;
   }
 
-  /* Keep cards visible with borders */
   .rounded-2xl, .rounded-xl, .ios-glass, .ios-glass-card {
     border: 1px solid #e5e7eb !important;
     box-shadow: none !important;
@@ -163,12 +173,10 @@ body {
     page-break-inside: avoid;
   }
 
-  /* Page breaks */
   .space-y-6 > * {
     page-break-inside: avoid;
   }
 
-  /* Page margins */
   @page {
     margin: 15mm 12mm;
     size: A4;

@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { 
   Trophy, 
   Clock, 
@@ -65,24 +64,15 @@ export default function IdeaCard({ idea }: IdeaCardProps) {
   };
 
   return (
-    <motion.div
-      initial={{ scale: 0.95, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.4, type: 'spring', damping: 20 }}
-      className="ios-glass rounded-[32px] p-6 sm:p-10 shadow-2xl relative overflow-hidden"
-    >
+    <div className="ios-glass rounded-[32px] p-6 sm:p-10 shadow-2xl relative overflow-hidden anim-fade-scale">
       {/* Decorative top accent glow */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-400/60 to-transparent" />
 
       {/* Header */}
       <div className="text-center mb-8">
-        <motion.div
-          initial={{ y: -15, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="inline-flex p-3 rounded-2xl ios-glass-pill mb-4 shadow-inner"
-        >
+        <div className="inline-flex p-3 rounded-2xl ios-glass-pill mb-4 shadow-inner">
           <Sparkles className="w-8 h-8 text-amber-300" />
-        </motion.div>
+        </div>
 
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-4 leading-tight">
           {idea.title}
@@ -314,6 +304,6 @@ export default function IdeaCard({ idea }: IdeaCardProps) {
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
